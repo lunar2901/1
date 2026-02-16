@@ -195,39 +195,438 @@
   <script>
     // --- DATA (your original list can stay; shortened here for readability) ---
     const vocabularyData = [
-      {
-        word: "sprechen",
-        type: "Verb (strong, irregular)",
-        conjugation: "spricht, sprach, hat gesprochen",
-        meanings: [{
-          definition: "to speak, to talk",
-          usage: "General action of speaking or talking",
-          examples: [
-            { de: "Ich spreche Deutsch.", en: "I speak German." },
-            { de: "Kannst du lauter sprechen?", en: "Can you speak louder?" },
-            { de: "Wir sprechen über das Wetter.", en: "We're talking about the weather." }
-          ]
-        }],
-        variations: [
-          { form: "sprechen über + Akkusativ", meaning: "to talk about something", examples: [{ de: "Wir sprechen über die Prüfung.", en: "We're talking about the exam." }] },
-          { form: "sprechen mit + Dativ", meaning: "to speak with someone", examples: [{ de: "Ich muss mit dir sprechen.", en: "I need to speak with you." }] },
-        ],
-        related: ["die Sprache (language)", "der Sprecher (speaker)", "die Aussprache (pronunciation)"]
-      },
-      {
-        word: "versprechen",
-        type: "Verb (strong, inseparable prefix)",
-        conjugation: "verspricht, versprach, hat versprochen",
-        meanings: [{
-          definition: "to promise",
-          usage: "Making a commitment or pledge",
-          examples: [{ de: "Ich verspreche dir, pünktlich zu sein.", en: "I promise you to be on time." }]
-        }],
-        variations: [],
-        related: ["das Versprechen (promise)"]
-      }
-      // ✅ paste the rest of your entries here unchanged
-    ];
+            {
+                word: "sprechen",
+                type: "Verb (strong, irregular)",
+                conjugation: "spricht, sprach, hat gesprochen",
+                meanings: [
+                    {
+                        definition: "to speak, to talk",
+                        usage: "General action of speaking or talking",
+                        examples: [
+                            { de: "Ich spreche Deutsch.", en: "I speak German." },
+                            { de: "Kannst du lauter sprechen?", en: "Can you speak louder?" },
+                            { de: "Wir sprechen über das Wetter.", en: "We're talking about the weather." }
+                        ]
+                    }
+                ],
+                variations: [
+                    { 
+                        form: "sprechen über + Akkusativ",
+                        meaning: "to talk about something",
+                        examples: [
+                            { de: "Wir sprechen über die Prüfung.", en: "We're talking about the exam." },
+                            { de: "Er spricht gern über seine Reisen.", en: "He likes to talk about his travels." }
+                        ]
+                    },
+                    { 
+                        form: "sprechen mit + Dativ",
+                        meaning: "to speak with someone",
+                        examples: [
+                            { de: "Ich muss mit dir sprechen.", en: "I need to speak with you." },
+                            { de: "Sie spricht mit dem Chef.", en: "She's speaking with the boss." }
+                        ]
+                    },
+                    { 
+                        form: "sprechen von + Dativ",
+                        meaning: "to speak of/about (mentioning)",
+                        examples: [
+                            { de: "Alle sprechen von diesem Film.", en: "Everyone is talking about this movie." },
+                            { de: "Man spricht viel von dir.", en: "People talk about you a lot." }
+                        ]
+                    }
+                ],
+                related: ["die Sprache (language)", "der Sprecher (speaker)", "die Aussprache (pronunciation)"]
+            },
+            {
+                word: "versprechen",
+                type: "Verb (strong, inseparable prefix)",
+                conjugation: "verspricht, versprach, hat versprochen",
+                meanings: [
+                    {
+                        definition: "to promise",
+                        usage: "Making a commitment or pledge",
+                        examples: [
+                            { de: "Ich verspreche dir, pünktlich zu sein.", en: "I promise you to be on time." },
+                            { de: "Er hat mir versprochen, zu helfen.", en: "He promised me to help." },
+                            { de: "Das verspricht interessant zu werden.", en: "That promises to be interesting." }
+                        ]
+                    }
+                ],
+                variations: [
+                    { 
+                        form: "sich versprechen",
+                        meaning: "to misspeak, to make a slip of the tongue",
+                        examples: [
+                            { de: "Entschuldigung, ich habe mich versprochen.", en: "Sorry, I misspoke." },
+                            { de: "Sie hat sich beim Namen versprochen.", en: "She made a mistake with the name." }
+                        ]
+                    },
+                    { 
+                        form: "sich (Dativ) etwas von etwas versprechen",
+                        meaning: "to expect something from something, to have hopes for",
+                        examples: [
+                            { de: "Ich verspreche mir viel von diesem Projekt.", en: "I expect a lot from this project." },
+                            { de: "Was versprichst du dir davon?", en: "What do you expect from that?" }
+                        ]
+                    }
+                ],
+                related: ["das Versprechen (promise)", "vielversprechend (promising)"]
+            },
+            {
+                word: "aussprechen",
+                type: "Verb (strong, separable prefix)",
+                conjugation: "spricht aus, sprach aus, hat ausgesprochen",
+                meanings: [
+                    {
+                        definition: "to pronounce",
+                        usage: "Articulating words or sounds",
+                        examples: [
+                            { de: "Wie spricht man dieses Wort aus?", en: "How do you pronounce this word?" },
+                            { de: "Sie spricht die Namen perfekt aus.", en: "She pronounces the names perfectly." }
+                        ]
+                    },
+                    {
+                        definition: "to express, to voice",
+                        usage: "Expressing thoughts or opinions",
+                        examples: [
+                            { de: "Er hat seine Meinung klar ausgesprochen.", en: "He clearly expressed his opinion." },
+                            { de: "Ich möchte mein Beileid aussprechen.", en: "I would like to express my condolences." }
+                        ]
+                    }
+                ],
+                variations: [
+                    { 
+                        form: "sich aussprechen",
+                        meaning: "to have a talk, to clear the air",
+                        examples: [
+                            { de: "Wir müssen uns aussprechen.", en: "We need to talk things out." },
+                            { de: "Sie haben sich endlich ausgesprochen.", en: "They finally cleared the air." }
+                        ]
+                    },
+                    { 
+                        form: "sich für/gegen etwas aussprechen",
+                        meaning: "to speak in favor of/against something",
+                        examples: [
+                            { de: "Ich spreche mich für diese Lösung aus.", en: "I'm in favor of this solution." },
+                            { de: "Er spricht sich gegen den Plan aus.", en: "He speaks against the plan." }
+                        ]
+                    }
+                ],
+                related: ["die Aussprache (pronunciation, discussion)"]
+            },
+            {
+                word: "besprechen",
+                type: "Verb (strong, inseparable prefix)",
+                conjugation: "bespricht, besprach, hat besprochen",
+                meanings: [
+                    {
+                        definition: "to discuss, to talk over",
+                        usage: "Having a discussion about something",
+                        examples: [
+                            { de: "Wir müssen das Problem besprechen.", en: "We need to discuss the problem." },
+                            { de: "Habt ihr das schon besprochen?", en: "Have you already discussed that?" },
+                            { de: "Lass uns das morgen besprechen.", en: "Let's talk about that tomorrow." }
+                        ]
+                    },
+                    {
+                        definition: "to review (book, movie, etc.)",
+                        usage: "Writing or giving a review",
+                        examples: [
+                            { de: "Der Kritiker hat den Film besprochen.", en: "The critic reviewed the movie." }
+                        ]
+                    }
+                ],
+                variations: [
+                    { 
+                        form: "sich besprechen",
+                        meaning: "to confer, to consult with each other",
+                        examples: [
+                            { de: "Die Ärzte müssen sich noch besprechen.", en: "The doctors still need to confer." },
+                            { de: "Wir haben uns lange besprochen.", en: "We consulted for a long time." }
+                        ]
+                    }
+                ],
+                related: ["die Besprechung (meeting, discussion)"]
+            },
+            {
+                word: "ansprechen",
+                type: "Verb (strong, separable prefix)",
+                conjugation: "spricht an, sprach an, hat angesprochen",
+                meanings: [
+                    {
+                        definition: "to address, to speak to",
+                        usage: "Initiating conversation with someone",
+                        examples: [
+                            { de: "Er hat mich auf der Straße angesprochen.", en: "He addressed me on the street." },
+                            { de: "Wie spreche ich sie am besten an?", en: "What's the best way to approach her?" }
+                        ]
+                    },
+                    {
+                        definition: "to appeal to, to attract",
+                        usage: "Something that attracts or interests",
+                        examples: [
+                            { de: "Das Angebot spricht mich an.", en: "The offer appeals to me." },
+                            { de: "Diese Musik spricht junge Leute an.", en: "This music appeals to young people." }
+                        ]
+                    },
+                    {
+                        definition: "to bring up, to mention (a topic)",
+                        usage: "Introducing a subject in conversation",
+                        examples: [
+                            { de: "Ich muss ein Problem ansprechen.", en: "I need to bring up a problem." },
+                            { de: "Er hat das Thema nicht angesprochen.", en: "He didn't mention the topic." }
+                        ]
+                    }
+                ],
+                variations: [
+                    { 
+                        form: "jemanden auf etwas ansprechen",
+                        meaning: "to address someone about something",
+                        examples: [
+                            { de: "Ich habe ihn auf seinen Fehler angesprochen.", en: "I addressed him about his mistake." }
+                        ]
+                    }
+                ],
+                related: ["ansprechend (appealing, attractive)", "der Ansprechpartner (contact person)"]
+            },
+            {
+                word: "entsprechen",
+                type: "verb",
+                conjugation: "entspricht, entsprach, hat entsprochen",
+                meanings: [
+                    {
+                        definition: "to correspond to, to match",
+                        usage: "When something matches or meets requirements (+ Dativ)",
+                        examples: [
+                            { de: "Das Produkt entspricht unseren Erwartungen.", en: "The product meets our expectations." },
+                            { de: "Seine Antwort entspricht nicht der Wahrheit.", en: "His answer doesn't correspond to the truth." },
+                            { de: "Das Haus entspricht meinen Vorstellungen.", en: "The house matches my ideas." }
+                        ]
+                    }
+                ],
+                variations: [],
+                related: ["entsprechend (corresponding, accordingly)", "die Entsprechung (equivalent, correspondence)"]
+            },
+            // CORE VERBS
+            { word: "sein", type: "verb", conjugation: "ist, war, ist gewesen", meanings: [{ definition: "to be", usage: "Existence, identity, location", examples: [{ de: "Ich bin müde.", en: "I am tired." }]}], variations: [], related: [] },
+            { word: "haben", type: "verb", conjugation: "hat, hatte, hat gehabt", meanings: [{ definition: "to have", usage: "Possession", examples: [{ de: "Ich habe einen Hund.", en: "I have a dog." }]}], variations: [], related: [] },
+            { word: "werden", type: "verb", conjugation: "wird, wurde, ist geworden", meanings: [{ definition: "to become, will", usage: "Change, future tense", examples: [{ de: "Ich werde Arzt.", en: "I'm becoming a doctor." }]}], variations: [], related: [] },
+            { word: "können", type: "verb", conjugation: "kann, konnte, hat gekonnt", meanings: [{ definition: "can, to be able to", usage: "Ability", examples: [{ de: "Ich kann Deutsch sprechen.", en: "I can speak German." }]}], variations: [], related: [] },
+            { word: "müssen", type: "verb", conjugation: "muss, musste, hat gemusst", meanings: [{ definition: "must, to have to", usage: "Necessity", examples: [{ de: "Ich muss arbeiten.", en: "I must work." }]}], variations: [], related: [] },
+            { word: "sollen", type: "verb", conjugation: "soll, sollte, hat gesollt", meanings: [{ definition: "should, to be supposed to", usage: "Obligation", examples: [{ de: "Ich soll um 9 Uhr dort sein.", en: "I'm supposed to be there at 9." }]}], variations: [], related: [] },
+            { word: "wollen", type: "verb", conjugation: "will, wollte, hat gewollt", meanings: [{ definition: "to want", usage: "Desire", examples: [{ de: "Ich will nach Hause gehen.", en: "I want to go home." }]}], variations: [], related: [] },
+            { word: "mögen", type: "verb", conjugation: "mag, mochte, hat gemocht", meanings: [{ definition: "to like", usage: "Preference", examples: [{ de: "Ich mag Schokolade.", en: "I like chocolate." }]}], variations: [], related: [] },
+            { word: "dürfen", type: "verb", conjugation: "darf, durfte, hat gedurft", meanings: [{ definition: "to be allowed to, may", usage: "Permission", examples: [{ de: "Darf ich reinkommen?", en: "May I come in?" }]}], variations: [], related: [] },
+            { word: "machen", type: "verb", conjugation: "macht, machte, hat gemacht", meanings: [{ definition: "to do, to make", usage: "General action", examples: [{ de: "Was machst du?", en: "What are you doing?" }]}], variations: [], related: [] },
+            { word: "gehen", type: "verb", conjugation: "geht, ging, ist gegangen", meanings: [{ definition: "to go, to walk", usage: "Movement", examples: [{ de: "Ich gehe zur Schule.", en: "I go to school." }]}], variations: [], related: [] },
+            { word: "kommen", type: "verb", conjugation: "kommt, kam, ist gekommen", meanings: [{ definition: "to come", usage: "Arrival", examples: [{ de: "Ich komme aus Deutschland.", en: "I come from Germany." }]}], variations: [], related: [] },
+            { word: "sehen", type: "verb", conjugation: "sieht, sah, hat gesehen", meanings: [{ definition: "to see", usage: "Vision", examples: [{ de: "Ich sehe einen Vogel.", en: "I see a bird." }]}], variations: [], related: [] },
+            { word: "wissen", type: "verb", conjugation: "weiß, wusste, hat gewusst", meanings: [{ definition: "to know (facts)", usage: "Knowledge", examples: [{ de: "Ich weiß es nicht.", en: "I don't know." }]}], variations: [], related: [] },
+            { word: "kennen", type: "verb", conjugation: "kennt, kannte, hat gekannt", meanings: [{ definition: "to know (be familiar with)", usage: "Familiarity", examples: [{ de: "Ich kenne ihn gut.", en: "I know him well." }]}], variations: [], related: [] },
+            { word: "sagen", type: "verb", conjugation: "sagt, sagte, hat gesagt", meanings: [{ definition: "to say, to tell", usage: "Speaking", examples: [{ de: "Was sagst du?", en: "What are you saying?" }]}], variations: [], related: [] },
+            { word: "finden", type: "verb", conjugation: "findet, fand, hat gefunden", meanings: [{ definition: "to find, to think", usage: "Discovery, opinion", examples: [{ de: "Ich finde meinen Schlüssel nicht.", en: "I can't find my key." }]}], variations: [], related: [] },
+            { word: "geben", type: "verb", conjugation: "gibt, gab, hat gegeben", meanings: [{ definition: "to give", usage: "Transfer", examples: [{ de: "Gib mir das Buch.", en: "Give me the book." }]}], variations: [], related: [] },
+            { word: "nehmen", type: "verb", conjugation: "nimmt, nahm, hat genommen", meanings: [{ definition: "to take", usage: "Receiving", examples: [{ de: "Nimm einen Apfel.", en: "Take an apple." }]}], variations: [], related: [] },
+            { word: "lassen", type: "verb", conjugation: "lässt, ließ, hat gelassen", meanings: [{ definition: "to let, to leave", usage: "Permission, leaving", examples: [{ de: "Lass mich in Ruhe.", en: "Leave me alone." }]}], variations: [], related: [] },
+            { word: "denken", type: "verb", conjugation: "denkt, dachte, hat gedacht", meanings: [{ definition: "to think", usage: "Thought", examples: [{ de: "Was denkst du?", en: "What do you think?" }]}], variations: [], related: [] },
+            { word: "glauben", type: "verb", conjugation: "glaubt, glaubte, hat geglaubt", meanings: [{ definition: "to believe, to think", usage: "Belief", examples: [{ de: "Ich glaube dir.", en: "I believe you." }]}], variations: [], related: [] },
+            { word: "verstehen", type: "verb", conjugation: "versteht, verstand, hat verstanden", meanings: [{ definition: "to understand", usage: "Comprehension", examples: [{ de: "Ich verstehe dich nicht.", en: "I don't understand you." }]}], variations: [], related: [] },
+            { word: "lernen", type: "verb", conjugation: "lernt, lernte, hat gelernt", meanings: [{ definition: "to learn, to study", usage: "Education", examples: [{ de: "Ich lerne Deutsch.", en: "I'm learning German." }]}], variations: [], related: [] },
+            { word: "arbeiten", type: "verb", conjugation: "arbeitet, arbeitete, hat gearbeitet", meanings: [{ definition: "to work", usage: "Employment", examples: [{ de: "Ich arbeite bei BMW.", en: "I work at BMW." }]}], variations: [], related: [] },
+            { word: "spielen", type: "verb", conjugation: "spielt, spielte, hat gespielt", meanings: [{ definition: "to play", usage: "Games, music", examples: [{ de: "Die Kinder spielen im Garten.", en: "The children play in the garden." }]}], variations: [], related: [] },
+            { word: "leben", type: "verb", conjugation: "lebt, lebte, hat gelebt", meanings: [{ definition: "to live", usage: "Existence", examples: [{ de: "Ich lebe in München.", en: "I live in Munich." }]}], variations: [], related: [] },
+            { word: "lieben", type: "verb", conjugation: "liebt, liebte, hat geliebt", meanings: [{ definition: "to love", usage: "Affection", examples: [{ de: "Ich liebe dich.", en: "I love you." }]}], variations: [], related: [] },
+            { word: "kaufen", type: "verb", conjugation: "kauft, kaufte, hat gekauft", meanings: [{ definition: "to buy", usage: "Purchasing", examples: [{ de: "Ich kaufe ein Auto.", en: "I'm buying a car." }]}], variations: [], related: [] },
+            { word: "verkaufen", type: "verb", conjugation: "verkauft, verkaufte, hat verkauft", meanings: [{ definition: "to sell", usage: "Sales", examples: [{ de: "Ich verkaufe mein Auto.", en: "I'm selling my car." }]}], variations: [], related: [] },
+            { word: "trinken", type: "verb", conjugation: "trinkt, trank, hat getrunken", meanings: [{ definition: "to drink", usage: "Consuming liquids", examples: [{ de: "Ich trinke Wasser.", en: "I drink water." }]}], variations: [], related: [] },
+            { word: "essen", type: "verb", conjugation: "isst, aß, hat gegessen", meanings: [{ definition: "to eat", usage: "Consuming food", examples: [{ de: "Was isst du?", en: "What are you eating?" }]}], variations: [], related: [] },
+            { word: "schlafen", type: "verb", conjugation: "schläft, schlief, hat geschlafen", meanings: [{ definition: "to sleep", usage: "Rest", examples: [{ de: "Ich schlafe acht Stunden.", en: "I sleep eight hours." }]}], variations: [], related: [] },
+            { word: "sitzen", type: "verb", conjugation: "sitzt, saß, hat gesessen", meanings: [{ definition: "to sit", usage: "Position", examples: [{ de: "Ich sitze auf dem Stuhl.", en: "I'm sitting on the chair." }]}], variations: [], related: [] },
+            { word: "stehen", type: "verb", conjugation: "steht, stand, hat gestanden", meanings: [{ definition: "to stand", usage: "Position", examples: [{ de: "Ich stehe vor der Tür.", en: "I'm standing at the door." }]}], variations: [], related: [] },
+            { word: "liegen", type: "verb", conjugation: "liegt, lag, hat gelegen", meanings: [{ definition: "to lie, to be located", usage: "Position", examples: [{ de: "Ich liege im Bett.", en: "I'm lying in bed." }]}], variations: [], related: [] },
+            { word: "fallen", type: "verb", conjugation: "fällt, fiel, ist gefallen", meanings: [{ definition: "to fall", usage: "Dropping", examples: [{ de: "Der Apfel fällt vom Baum.", en: "The apple falls from the tree." }]}], variations: [], related: [] },
+            { word: "bringen", type: "verb", conjugation: "bringt, brachte, hat gebracht", meanings: [{ definition: "to bring, to take", usage: "Transporting", examples: [{ de: "Bring mir das Buch.", en: "Bring me the book." }]}], variations: [], related: [] },
+            { word: "schreiben", type: "verb", conjugation: "schreibt, schrieb, hat geschrieben", meanings: [{ definition: "to write", usage: "Writing", examples: [{ de: "Ich schreibe einen Brief.", en: "I'm writing a letter." }]}], variations: [], related: [] },
+            { word: "lesen", type: "verb", conjugation: "liest, las, hat gelesen", meanings: [{ definition: "to read", usage: "Reading", examples: [{ de: "Ich lese ein Buch.", en: "I'm reading a book." }]}], variations: [], related: [] },
+            { word: "hören", type: "verb", conjugation: "hört, hörte, hat gehört", meanings: [{ definition: "to hear, to listen", usage: "Auditory", examples: [{ de: "Ich höre Musik.", en: "I'm listening to music." }]}], variations: [], related: [] },
+            { word: "fühlen", type: "verb", conjugation: "fühlt, fühlte, hat gefühlt", meanings: [{ definition: "to feel", usage: "Sensation", examples: [{ de: "Ich fühle mich gut.", en: "I feel good." }]}], variations: [], related: [] },
+            { word: "zeigen", type: "verb", conjugation: "zeigt, zeigte, hat gezeigt", meanings: [{ definition: "to show", usage: "Display", examples: [{ de: "Zeig mir das Bild.", en: "Show me the picture." }]}], variations: [], related: [] },
+            { word: "beginnen", type: "verb", conjugation: "beginnt, begann, hat begonnen", meanings: [{ definition: "to begin, to start", usage: "Commencement", examples: [{ de: "Der Film beginnt um 8 Uhr.", en: "The movie starts at 8 o'clock." }]}], variations: [], related: [] },
+            { word: "enden", type: "verb", conjugation: "endet, endete, hat geendet", meanings: [{ definition: "to end, to finish", usage: "Conclusion", examples: [{ de: "Der Film endet um 10 Uhr.", en: "The movie ends at 10 o'clock." }]}], variations: [], related: [] },
+            { word: "öffnen", type: "verb", conjugation: "öffnet, öffnete, hat geöffnet", meanings: [{ definition: "to open", usage: "Opening", examples: [{ de: "Öffne die Tür.", en: "Open the door." }]}], variations: [], related: [] },
+            { word: "schließen", type: "verb", conjugation: "schließt, schloss, hat geschlossen", meanings: [{ definition: "to close, to lock", usage: "Closing", examples: [{ de: "Schließ die Tür.", en: "Close the door." }]}], variations: [], related: [] },
+            { word: "warten", type: "verb", conjugation: "wartet, wartete, hat gewartet", meanings: [{ definition: "to wait", usage: "Waiting", examples: [{ de: "Ich warte auf dich.", en: "I'm waiting for you." }]}], variations: [], related: [] },
+            { word: "suchen", type: "verb", conjugation: "sucht, suchte, hat gesucht", meanings: [{ definition: "to search, to look for", usage: "Seeking", examples: [{ de: "Ich suche meinen Schlüssel.", en: "I'm looking for my key." }]}], variations: [], related: [] },
+            { word: "fragen", type: "verb", conjugation: "fragt, fragte, hat gefragt", meanings: [{ definition: "to ask", usage: "Inquiring", examples: [{ de: "Ich frage dich etwas.", en: "I'm asking you something." }]}], variations: [], related: [] },
+            { word: "antworten", type: "verb", conjugation: "antwortet, antwortete, hat geantwortet", meanings: [{ definition: "to answer, to reply", usage: "Responding", examples: [{ de: "Antworte mir bitte.", en: "Please answer me." }]}], variations: [], related: [] },
+            { word: "erklären", type: "verb", conjugation: "erklärt, erklärte, hat erklärt", meanings: [{ definition: "to explain", usage: "Clarifying", examples: [{ de: "Kannst du das erklären?", en: "Can you explain that?" }]}], variations: [], related: [] },
+            { word: "helfen", type: "verb", conjugation: "hilft, half, hat geholfen", meanings: [{ definition: "to help", usage: "Assistance", examples: [{ de: "Kannst du mir helfen?", en: "Can you help me?" }]}], variations: [], related: [] },
+            { word: "besuchen", type: "verb", conjugation: "besucht, besuchte, hat besucht", meanings: [{ definition: "to visit", usage: "Visiting", examples: [{ de: "Ich besuche meine Oma.", en: "I'm visiting my grandma." }]}], variations: [], related: [] },
+            { word: "treffen", type: "verb", conjugation: "trifft, traf, hat getroffen", meanings: [{ definition: "to meet, to hit", usage: "Meeting", examples: [{ de: "Ich treffe meine Freunde.", en: "I'm meeting my friends." }]}], variations: [], related: [] },
+            { word: "verlieren", type: "verb", conjugation: "verliert, verlor, hat verloren", meanings: [{ definition: "to lose", usage: "Loss", examples: [{ de: "Ich habe meinen Schlüssel verloren.", en: "I lost my key." }]}], variations: [], related: [] },
+            { word: "gewinnen", type: "verb", conjugation: "gewinnt, gewann, hat gewonnen", meanings: [{ definition: "to win, to gain", usage: "Victory", examples: [{ de: "Wir haben gewonnen!", en: "We won!" }]}], variations: [], related: [] },
+            { word: "nutzen", type: "verb", conjugation: "nutzt, nutzte, hat genutzt", meanings: [{ definition: "to use, to utilize", usage: "Using", examples: [{ de: "Ich nutze das Internet.", en: "I use the internet." }]}], variations: [], related: [] },
+            { word: "zahlen", type: "verb", conjugation: "zahlt, zahlte, hat gezahlt", meanings: [{ definition: "to pay", usage: "Payment", examples: [{ de: "Ich zahle die Rechnung.", en: "I'm paying the bill." }]}], variations: [], related: [] },
+            { word: "zählen", type: "verb", conjugation: "zählt, zählte, hat gezählt", meanings: [{ definition: "to count", usage: "Counting", examples: [{ de: "Ich zähle bis zehn.", en: "I count to ten." }]}], variations: [], related: [] },
+            { word: "kosten", type: "verb", conjugation: "kostet, kostete, hat gekostet", meanings: [{ definition: "to cost", usage: "Price", examples: [{ de: "Was kostet das?", en: "How much does that cost?" }]}], variations: [], related: [] },
+            { word: "sparen", type: "verb", conjugation: "spart, sparte, hat gespart", meanings: [{ definition: "to save (money)", usage: "Economizing", examples: [{ de: "Ich spare Geld.", en: "I'm saving money." }]}], variations: [], related: [] },
+            { word: "verdienen", type: "verb", conjugation: "verdient, verdiente, hat verdient", meanings: [{ definition: "to earn, to deserve", usage: "Income", examples: [{ de: "Ich verdiene 3000 Euro.", en: "I earn 3000 euros." }]}], variations: [], related: [] },
+            { word: "reisen", type: "verb", conjugation: "reist, reiste, ist gereist", meanings: [{ definition: "to travel", usage: "Traveling", examples: [{ de: "Ich reise gern.", en: "I like to travel." }]}], variations: [], related: [] },
+            { word: "fahren", type: "verb", conjugation: "fährt, fuhr, ist gefahren", meanings: [{ definition: "to drive, to go (by vehicle)", usage: "Vehicle movement", examples: [{ de: "Ich fahre mit dem Auto.", en: "I'm going by car." }]}], variations: [], related: [] },
+            { word: "laufen", type: "verb", conjugation: "läuft, lief, ist gelaufen", meanings: [{ definition: "to run, to walk", usage: "Moving on foot", examples: [{ de: "Ich laufe jeden Tag.", en: "I run every day." }]}], variations: [], related: [] },
+            { word: "fliegen", type: "verb", conjugation: "fliegt, flog, ist geflogen", meanings: [{ definition: "to fly", usage: "Air travel", examples: [{ de: "Ich fliege nach Berlin.", en: "I'm flying to Berlin." }]}], variations: [], related: [] },
+            { word: "schwimmen", type: "verb", conjugation: "schwimmt, schwamm, ist geschwommen", meanings: [{ definition: "to swim", usage: "Swimming", examples: [{ de: "Ich schwimme gern.", en: "I like to swim." }]}], variations: [], related: [] },
+            { word: "steigen", type: "verb", conjugation: "steigt, stieg, ist gestiegen", meanings: [{ definition: "to climb, to rise", usage: "Ascending", examples: [{ de: "Ich steige die Treppe hinauf.", en: "I'm climbing the stairs." }]}], variations: [], related: [] },
+            { word: "bleiben", type: "verb", conjugation: "bleibt, blieb, ist geblieben", meanings: [{ definition: "to stay, to remain", usage: "Continuing", examples: [{ de: "Ich bleibe zu Hause.", en: "I'm staying at home." }]}], variations: [], related: [] },
+            { word: "wohnen", type: "verb", conjugation: "wohnt, wohnte, hat gewohnt", meanings: [{ definition: "to live, to reside", usage: "Residence", examples: [{ de: "Ich wohne in Berlin.", en: "I live in Berlin." }]}], variations: [], related: [] },
+            { word: "bauen", type: "verb", conjugation: "baut, baute, hat gebaut", meanings: [{ definition: "to build", usage: "Construction", examples: [{ de: "Sie bauen ein Haus.", en: "They're building a house." }]}], variations: [], related: [] },
+            { word: "reparieren", type: "verb", conjugation: "repariert, reparierte, hat repariert", meanings: [{ definition: "to repair, to fix", usage: "Fixing", examples: [{ de: "Ich repariere mein Auto.", en: "I'm repairing my car." }]}], variations: [], related: [] },
+            { word: "putzen", type: "verb", conjugation: "putzt, putzte, hat geputzt", meanings: [{ definition: "to clean", usage: "Cleaning", examples: [{ de: "Ich putze das Haus.", en: "I'm cleaning the house." }]}], variations: [], related: [] },
+            { word: "waschen", type: "verb", conjugation: "wäscht, wusch, hat gewaschen", meanings: [{ definition: "to wash", usage: "Washing", examples: [{ de: "Ich wasche meine Hände.", en: "I'm washing my hands." }]}], variations: [], related: [] },
+            { word: "kochen", type: "verb", conjugation: "kocht, kochte, hat gekocht", meanings: [{ definition: "to cook, to boil", usage: "Cooking", examples: [{ de: "Ich koche Pasta.", en: "I'm cooking pasta." }]}], variations: [], related: [] },
+            { word: "backen", type: "verb", conjugation: "bäckt, buk, hat gebacken", meanings: [{ definition: "to bake", usage: "Baking", examples: [{ de: "Ich backe einen Kuchen.", en: "I'm baking a cake." }]}], variations: [], related: [] },
+            { word: "schneiden", type: "verb", conjugation: "schneidet, schnitt, hat geschnitten", meanings: [{ definition: "to cut", usage: "Cutting", examples: [{ de: "Ich schneide das Brot.", en: "I'm cutting the bread." }]}], variations: [], related: [] },
+            { word: "wählen", type: "verb", conjugation: "wählt, wählte, hat gewählt", meanings: [{ definition: "to choose, to vote", usage: "Selection", examples: [{ de: "Ich wähle die rote Jacke.", en: "I choose the red jacket." }]}], variations: [], related: [] },
+            { word: "tragen", type: "verb", conjugation: "trägt, trug, hat getragen", meanings: [{ definition: "to wear, to carry", usage: "Wearing/carrying", examples: [{ de: "Ich trage eine Brille.", en: "I wear glasses." }]}], variations: [], related: [] },
+            { word: "ziehen", type: "verb", conjugation: "zieht, zog, hat gezogen", meanings: [{ definition: "to pull, to move", usage: "Pulling", examples: [{ de: "Zieh die Tür zu.", en: "Pull the door closed." }]}], variations: [], related: [] },
+            { word: "drücken", type: "verb", conjugation: "drückt, drückte, hat gedrückt", meanings: [{ definition: "to push, to press", usage: "Pressing", examples: [{ de: "Drück den Knopf.", en: "Press the button." }]}], variations: [], related: [] },
+            { word: "werfen", type: "verb", conjugation: "wirft, warf, hat geworfen", meanings: [{ definition: "to throw", usage: "Throwing", examples: [{ de: "Wirf mir den Ball.", en: "Throw me the ball." }]}], variations: [], related: [] },
+            { word: "holen", type: "verb", conjugation: "holt, holte, hat geholt", meanings: [{ definition: "to fetch, to get", usage: "Retrieving", examples: [{ de: "Hol mir ein Glas Wasser.", en: "Get me a glass of water." }]}], variations: [], related: [] },
+            { word: "legen", type: "verb", conjugation: "legt, legte, hat gelegt", meanings: [{ definition: "to lay, to put", usage: "Placing", examples: [{ de: "Leg das Buch auf den Tisch.", en: "Put the book on the table." }]}], variations: [], related: [] },
+            { word: "stellen", type: "verb", conjugation: "stellt, stellte, hat gestellt", meanings: [{ definition: "to put, to place", usage: "Placing upright", examples: [{ de: "Stell die Vase auf den Tisch.", en: "Put the vase on the table." }]}], variations: [], related: [] },
+            { word: "hängen", type: "verb", conjugation: "hängt, hing, hat gehangen", meanings: [{ definition: "to hang", usage: "Hanging", examples: [{ de: "Das Bild hängt an der Wand.", en: "The picture hangs on the wall." }]}], variations: [], related: [] },
+            
+            // ESSENTIAL NOUNS
+            { word: "der Mann", type: "noun", article: "der", plural: "die Männer", meanings: [{ definition: "man, husband", usage: "Adult male", examples: [{ de: "Der Mann ist groß.", en: "The man is tall." }]}], variations: [], related: [] },
+            { word: "die Frau", type: "noun", article: "die", plural: "die Frauen", meanings: [{ definition: "woman, wife", usage: "Adult female", examples: [{ de: "Die Frau ist nett.", en: "The woman is nice." }]}], variations: [], related: [] },
+            { word: "das Kind", type: "noun", article: "das", plural: "die Kinder", meanings: [{ definition: "child", usage: "Young person", examples: [{ de: "Das Kind spielt.", en: "The child is playing." }]}], variations: [], related: [] },
+            { word: "der Mensch", type: "noun", article: "der", plural: "die Menschen", meanings: [{ definition: "human being, person", usage: "Human", examples: [{ de: "Jeder Mensch ist einzigartig.", en: "Every person is unique." }]}], variations: [], related: [] },
+            { word: "die Familie", type: "noun", article: "die", plural: "die Familien", meanings: [{ definition: "family", usage: "Family unit", examples: [{ de: "Meine Familie ist groß.", en: "My family is big." }]}], variations: [], related: [] },
+            { word: "der Freund", type: "noun", article: "der", plural: "die Freunde", meanings: [{ definition: "friend (male), boyfriend", usage: "Male friend", examples: [{ de: "Er ist mein bester Freund.", en: "He's my best friend." }]}], variations: [], related: [] },
+            { word: "das Haus", type: "noun", article: "das", plural: "die Häuser", meanings: [{ definition: "house", usage: "Building", examples: [{ de: "Das Haus ist groß.", en: "The house is big." }]}], variations: [], related: [] },
+            { word: "die Wohnung", type: "noun", article: "die", plural: "die Wohnungen", meanings: [{ definition: "apartment", usage: "Living space", examples: [{ de: "Ich suche eine Wohnung.", en: "I'm looking for an apartment." }]}], variations: [], related: [] },
+            { word: "das Zimmer", type: "noun", article: "das", plural: "die Zimmer", meanings: [{ definition: "room", usage: "Room in building", examples: [{ de: "Mein Zimmer ist sauber.", en: "My room is clean." }]}], variations: [], related: [] },
+            { word: "die Tür", type: "noun", article: "die", plural: "die Türen", meanings: [{ definition: "door", usage: "Entrance/exit", examples: [{ de: "Die Tür ist offen.", en: "The door is open." }]}], variations: [], related: [] },
+            { word: "das Fenster", type: "noun", article: "das", plural: "die Fenster", meanings: [{ definition: "window", usage: "Opening", examples: [{ de: "Das Fenster ist geschlossen.", en: "The window is closed." }]}], variations: [], related: [] },
+            { word: "der Tisch", type: "noun", article: "der", plural: "die Tische", meanings: [{ definition: "table", usage: "Furniture", examples: [{ de: "Der Tisch ist groß.", en: "The table is big." }]}], variations: [], related: [] },
+            { word: "der Stuhl", type: "noun", article: "der", plural: "die Stühle", meanings: [{ definition: "chair", usage: "Furniture", examples: [{ de: "Der Stuhl ist bequem.", en: "The chair is comfortable." }]}], variations: [], related: [] },
+            { word: "das Bett", type: "noun", article: "das", plural: "die Betten", meanings: [{ definition: "bed", usage: "Furniture", examples: [{ de: "Das Bett ist weich.", en: "The bed is soft." }]}], variations: [], related: [] },
+            { word: "die Stadt", type: "noun", article: "die", plural: "die Städte", meanings: [{ definition: "city, town", usage: "Urban area", examples: [{ de: "Berlin ist eine große Stadt.", en: "Berlin is a big city." }]}], variations: [], related: [] },
+            { word: "das Land", type: "noun", article: "das", plural: "die Länder", meanings: [{ definition: "country, countryside", usage: "Nation/rural", examples: [{ de: "Deutschland ist ein Land.", en: "Germany is a country." }]}], variations: [], related: [] },
+            { word: "die Straße", type: "noun", article: "die", plural: "die Straßen", meanings: [{ definition: "street, road", usage: "Road", examples: [{ de: "Die Straße ist lang.", en: "The street is long." }]}], variations: [], related: [] },
+            { word: "der Weg", type: "noun", article: "der", plural: "die Wege", meanings: [{ definition: "way, path", usage: "Path", examples: [{ de: "Der Weg ist kurz.", en: "The way is short." }]}], variations: [], related: [] },
+            { word: "das Auto", type: "noun", article: "das", plural: "die Autos", meanings: [{ definition: "car", usage: "Vehicle", examples: [{ de: "Das Auto ist neu.", en: "The car is new." }]}], variations: [], related: [] },
+            { word: "der Bus", type: "noun", article: "der", plural: "die Busse", meanings: [{ definition: "bus", usage: "Transport", examples: [{ de: "Der Bus kommt.", en: "The bus is coming." }]}], variations: [], related: [] },
+            { word: "der Zug", type: "noun", article: "der", plural: "die Züge", meanings: [{ definition: "train", usage: "Transport", examples: [{ de: "Der Zug fährt ab.", en: "The train is departing." }]}], variations: [], related: [] },
+            { word: "das Flugzeug", type: "noun", article: "das", plural: "die Flugzeuge", meanings: [{ definition: "airplane", usage: "Aircraft", examples: [{ de: "Das Flugzeug fliegt.", en: "The airplane is flying." }]}], variations: [], related: [] },
+            { word: "das Fahrrad", type: "noun", article: "das", plural: "die Fahrräder", meanings: [{ definition: "bicycle", usage: "Vehicle", examples: [{ de: "Mein Fahrrad ist rot.", en: "My bicycle is red." }]}], variations: [], related: [] },
+            { word: "die Schule", type: "noun", article: "die", plural: "die Schulen", meanings: [{ definition: "school", usage: "Education", examples: [{ de: "Die Schule beginnt um 8 Uhr.", en: "School starts at 8 o'clock." }]}], variations: [], related: [] },
+            { word: "die Universität", type: "noun", article: "die", plural: "die Universitäten", meanings: [{ definition: "university", usage: "Higher education", examples: [{ de: "Ich studiere an der Universität.", en: "I study at the university." }]}], variations: [], related: [] },
+            { word: "das Buch", type: "noun", article: "das", plural: "die Bücher", meanings: [{ definition: "book", usage: "Reading", examples: [{ de: "Das Buch ist interessant.", en: "The book is interesting." }]}], variations: [], related: [] },
+            { word: "die Zeitung", type: "noun", article: "die", plural: "die Zeitungen", meanings: [{ definition: "newspaper", usage: "News", examples: [{ de: "Ich lese die Zeitung.", en: "I'm reading the newspaper." }]}], variations: [], related: [] },
+            { word: "der Brief", type: "noun", article: "der", plural: "die Briefe", meanings: [{ definition: "letter", usage: "Mail", examples: [{ de: "Ich schreibe einen Brief.", en: "I'm writing a letter." }]}], variations: [], related: [] },
+            { word: "das Handy", type: "noun", article: "das", plural: "die Handys", meanings: [{ definition: "mobile phone", usage: "Phone", examples: [{ de: "Mein Handy klingelt.", en: "My cell phone is ringing." }]}], variations: [], related: [] },
+            { word: "der Computer", type: "noun", article: "der", plural: "die Computer", meanings: [{ definition: "computer", usage: "Technology", examples: [{ de: "Der Computer ist schnell.", en: "The computer is fast." }]}], variations: [], related: [] },
+            { word: "das Internet", type: "noun", article: "das", plural: "-", meanings: [{ definition: "internet", usage: "Network", examples: [{ de: "Ich surfe im Internet.", en: "I'm surfing the internet." }]}], variations: [], related: [] },
+            { word: "die Arbeit", type: "noun", article: "die", plural: "die Arbeiten", meanings: [{ definition: "work, job", usage: "Employment", examples: [{ de: "Die Arbeit macht Spaß.", en: "The work is fun." }]}], variations: [], related: [] },
+            { word: "das Büro", type: "noun", article: "das", plural: "die Büros", meanings: [{ definition: "office", usage: "Workplace", examples: [{ de: "Ich arbeite im Büro.", en: "I work in the office." }]}], variations: [], related: [] },
+            { word: "das Geld", type: "noun", article: "das", plural: "-", meanings: [{ definition: "money", usage: "Currency", examples: [{ de: "Ich brauche Geld.", en: "I need money." }]}], variations: [], related: [] },
+            { word: "der Euro", type: "noun", article: "der", plural: "die Euros", meanings: [{ definition: "euro", usage: "Currency", examples: [{ de: "Das kostet 10 Euro.", en: "That costs 10 euros." }]}], variations: [], related: [] },
+            { word: "der Preis", type: "noun", article: "der", plural: "die Preise", meanings: [{ definition: "price, prize", usage: "Cost", examples: [{ de: "Der Preis ist hoch.", en: "The price is high." }]}], variations: [], related: [] },
+            { word: "das Geschäft", type: "noun", article: "das", plural: "die Geschäfte", meanings: [{ definition: "store, business", usage: "Shop", examples: [{ de: "Das Geschäft ist geöffnet.", en: "The store is open." }]}], variations: [], related: [] },
+            { word: "der Supermarkt", type: "noun", article: "der", plural: "die Supermärkte", meanings: [{ definition: "supermarket", usage: "Shop", examples: [{ de: "Ich gehe zum Supermarkt.", en: "I'm going to the supermarket." }]}], variations: [], related: [] },
+            { word: "das Essen", type: "noun", article: "das", plural: "-", meanings: [{ definition: "food, meal", usage: "Food", examples: [{ de: "Das Essen schmeckt gut.", en: "The food tastes good." }]}], variations: [], related: [] },
+            { word: "das Frühstück", type: "noun", article: "das", plural: "-", meanings: [{ definition: "breakfast", usage: "Meal", examples: [{ de: "Ich esse Frühstück.", en: "I'm eating breakfast." }]}], variations: [], related: [] },
+            { word: "das Mittagessen", type: "noun", article: "das", plural: "-", meanings: [{ definition: "lunch", usage: "Meal", examples: [{ de: "Was gibt es zum Mittagessen?", en: "What's for lunch?" }]}], variations: [], related: [] },
+            { word: "das Abendessen", type: "noun", article: "das", plural: "-", meanings: [{ definition: "dinner", usage: "Meal", examples: [{ de: "Das Abendessen ist lecker.", en: "Dinner is delicious." }]}], variations: [], related: [] },
+            { word: "das Brot", type: "noun", article: "das", plural: "die Brote", meanings: [{ definition: "bread", usage: "Food", examples: [{ de: "Das Brot ist frisch.", en: "The bread is fresh." }]}], variations: [], related: [] },
+            { word: "der Käse", type: "noun", article: "der", plural: "-", meanings: [{ definition: "cheese", usage: "Food", examples: [{ de: "Der Käse schmeckt gut.", en: "The cheese tastes good." }]}], variations: [], related: [] },
+            { word: "die Butter", type: "noun", article: "die", plural: "-", meanings: [{ definition: "butter", usage: "Food", examples: [{ de: "Die Butter ist weich.", en: "The butter is soft." }]}], variations: [], related: [] },
+            { word: "die Milch", type: "noun", article: "die", plural: "-", meanings: [{ definition: "milk", usage: "Drink", examples: [{ de: "Ich trinke Milch.", en: "I drink milk." }]}], variations: [], related: [] },
+            { word: "der Kaffee", type: "noun", article: "der", plural: "die Kaffees", meanings: [{ definition: "coffee", usage: "Drink", examples: [{ de: "Ich trinke Kaffee.", en: "I drink coffee." }]}], variations: [], related: [] },
+            { word: "der Tee", type: "noun", article: "der", plural: "die Tees", meanings: [{ definition: "tea", usage: "Drink", examples: [{ de: "Ich trinke Tee.", en: "I drink tea." }]}], variations: [], related: [] },
+            { word: "das Wasser", type: "noun", article: "das", plural: "-", meanings: [{ definition: "water", usage: "Drink", examples: [{ de: "Ich trinke Wasser.", en: "I drink water." }]}], variations: [], related: [] },
+            { word: "der Saft", type: "noun", article: "der", plural: "die Säfte", meanings: [{ definition: "juice", usage: "Drink", examples: [{ de: "Ich trinke Orangensaft.", en: "I drink orange juice." }]}], variations: [], related: [] },
+            { word: "das Bier", type: "noun", article: "das", plural: "die Biere", meanings: [{ definition: "beer", usage: "Drink", examples: [{ de: "Ich trinke ein Bier.", en: "I'm drinking a beer." }]}], variations: [], related: [] },
+            { word: "der Wein", type: "noun", article: "der", plural: "die Weine", meanings: [{ definition: "wine", usage: "Drink", examples: [{ de: "Der Wein schmeckt gut.", en: "The wine tastes good." }]}], variations: [], related: [] },
+            { word: "das Obst", type: "noun", article: "das", plural: "-", meanings: [{ definition: "fruit", usage: "Food", examples: [{ de: "Ich esse gern Obst.", en: "I like to eat fruit." }]}], variations: [], related: [] },
+            { word: "das Gemüse", type: "noun", article: "das", plural: "-", meanings: [{ definition: "vegetables", usage: "Food", examples: [{ de: "Ich esse viel Gemüse.", en: "I eat a lot of vegetables." }]}], variations: [], related: [] },
+            { word: "der Apfel", type: "noun", article: "der", plural: "die Äpfel", meanings: [{ definition: "apple", usage: "Fruit", examples: [{ de: "Der Apfel ist rot.", en: "The apple is red." }]}], variations: [], related: [] },
+            { word: "die Banane", type: "noun", article: "die", plural: "die Bananen", meanings: [{ definition: "banana", usage: "Fruit", examples: [{ de: "Die Banane ist gelb.", en: "The banana is yellow." }]}], variations: [], related: [] },
+            { word: "die Zeit", type: "noun", article: "die", plural: "die Zeiten", meanings: [{ definition: "time", usage: "Temporal", examples: [{ de: "Ich habe keine Zeit.", en: "I have no time." }]}], variations: [], related: [] },
+            { word: "der Tag", type: "noun", article: "der", plural: "die Tage", meanings: [{ definition: "day", usage: "Time", examples: [{ de: "Guten Tag!", en: "Good day!" }]}], variations: [], related: [] },
+            { word: "die Woche", type: "noun", article: "die", plural: "die Wochen", meanings: [{ definition: "week", usage: "Time", examples: [{ de: "Nächste Woche fahre ich weg.", en: "Next week I'm going away." }]}], variations: [], related: [] },
+            { word: "das Jahr", type: "noun", article: "das", plural: "die Jahre", meanings: [{ definition: "year", usage: "Time", examples: [{ de: "Das Jahr hat 365 Tage.", en: "The year has 365 days." }]}], variations: [], related: [] },
+            { word: "der Monat", type: "noun", article: "der", plural: "die Monate", meanings: [{ definition: "month", usage: "Time", examples: [{ de: "Januar ist der erste Monat.", en: "January is the first month." }]}], variations: [], related: [] },
+            { word: "die Stunde", type: "noun", article: "die", plural: "die Stunden", meanings: [{ definition: "hour, lesson", usage: "Time", examples: [{ de: "Eine Stunde hat 60 Minuten.", en: "An hour has 60 minutes." }]}], variations: [], related: [] },
+            { word: "die Minute", type: "noun", article: "die", plural: "die Minuten", meanings: [{ definition: "minute", usage: "Time", examples: [{ de: "Warte eine Minute.", en: "Wait a minute." }]}], variations: [], related: [] },
+            { word: "das Wetter", type: "noun", article: "das", plural: "-", meanings: [{ definition: "weather", usage: "Climate", examples: [{ de: "Das Wetter ist schön.", en: "The weather is nice." }]}], variations: [], related: [] },
+            { word: "die Sonne", type: "noun", article: "die", plural: "die Sonnen", meanings: [{ definition: "sun", usage: "Star", examples: [{ de: "Die Sonne scheint.", en: "The sun is shining." }]}], variations: [], related: [] },
+            { word: "der Regen", type: "noun", article: "der", plural: "-", meanings: [{ definition: "rain", usage: "Weather", examples: [{ de: "Der Regen fällt.", en: "The rain is falling." }]}], variations: [], related: [] },
+            { word: "der Schnee", type: "noun", article: "der", plural: "-", meanings: [{ definition: "snow", usage: "Weather", examples: [{ de: "Der Schnee ist weiß.", en: "The snow is white." }]}], variations: [], related: [] },
+            { word: "der Wind", type: "noun", article: "der", plural: "die Winde", meanings: [{ definition: "wind", usage: "Weather", examples: [{ de: "Der Wind weht.", en: "The wind is blowing." }]}], variations: [], related: [] },
+            
+            // ADJECTIVES
+            { word: "gut", type: "adjective", meanings: [{ definition: "good, well", usage: "Positive quality", examples: [{ de: "Das Essen ist gut.", en: "The food is good." }]}], variations: [], related: [] },
+            { word: "schlecht", type: "adjective", meanings: [{ definition: "bad, poor", usage: "Negative quality", examples: [{ de: "Das Wetter ist schlecht.", en: "The weather is bad." }]}], variations: [], related: [] },
+            { word: "groß", type: "adjective", meanings: [{ definition: "big, large, tall", usage: "Size", examples: [{ de: "Das Haus ist groß.", en: "The house is big." }]}], variations: [], related: [] },
+            { word: "klein", type: "adjective", meanings: [{ definition: "small, little", usage: "Size", examples: [{ de: "Das Auto ist klein.", en: "The car is small." }]}], variations: [], related: [] },
+            { word: "neu", type: "adjective", meanings: [{ definition: "new", usage: "Recent", examples: [{ de: "Das Auto ist neu.", en: "The car is new." }]}], variations: [], related: [] },
+            { word: "alt", type: "adjective", meanings: [{ definition: "old", usage: "Age", examples: [{ de: "Das Haus ist alt.", en: "The house is old." }]}], variations: [], related: [] },
+            { word: "jung", type: "adjective", meanings: [{ definition: "young", usage: "Youth", examples: [{ de: "Sie ist jung.", en: "She is young." }]}], variations: [], related: [] },
+            { word: "schön", type: "adjective", meanings: [{ definition: "beautiful, nice", usage: "Aesthetic", examples: [{ de: "Das Wetter ist schön.", en: "The weather is nice." }]}], variations: [], related: [] },
+            { word: "hässlich", type: "adjective", meanings: [{ definition: "ugly", usage: "Unattractive", examples: [{ de: "Das Gebäude ist hässlich.", en: "The building is ugly." }]}], variations: [], related: [] },
+            { word: "lang", type: "adjective", meanings: [{ definition: "long", usage: "Length", examples: [{ de: "Der Weg ist lang.", en: "The way is long." }]}], variations: [], related: [] },
+            { word: "kurz", type: "adjective", meanings: [{ definition: "short", usage: "Length", examples: [{ de: "Die Strecke ist kurz.", en: "The distance is short." }]}], variations: [], related: [] },
+            { word: "schnell", type: "adjective", meanings: [{ definition: "fast, quick", usage: "Speed", examples: [{ de: "Das Auto ist schnell.", en: "The car is fast." }]}], variations: [], related: [] },
+            { word: "langsam", type: "adjective", meanings: [{ definition: "slow", usage: "Speed", examples: [{ de: "Der Zug ist langsam.", en: "The train is slow." }]}], variations: [], related: [] },
+            { word: "warm", type: "adjective", meanings: [{ definition: "warm", usage: "Temperature", examples: [{ de: "Das Wasser ist warm.", en: "The water is warm." }]}], variations: [], related: [] },
+            { word: "kalt", type: "adjective", meanings: [{ definition: "cold", usage: "Temperature", examples: [{ de: "Das Wetter ist kalt.", en: "The weather is cold." }]}], variations: [], related: [] },
+            { word: "heiß", type: "adjective", meanings: [{ definition: "hot", usage: "Temperature", examples: [{ de: "Der Kaffee ist heiß.", en: "The coffee is hot." }]}], variations: [], related: [] },
+            { word: "schwer", type: "adjective", meanings: [{ definition: "heavy, difficult", usage: "Weight/difficulty", examples: [{ de: "Der Koffer ist schwer.", en: "The suitcase is heavy." }]}], variations: [], related: [] },
+            { word: "leicht", type: "adjective", meanings: [{ definition: "light, easy", usage: "Weight/difficulty", examples: [{ de: "Die Tasche ist leicht.", en: "The bag is light." }]}], variations: [], related: [] },
+            { word: "stark", type: "adjective", meanings: [{ definition: "strong", usage: "Strength", examples: [{ de: "Er ist stark.", en: "He is strong." }]}], variations: [], related: [] },
+            { word: "schwach", type: "adjective", meanings: [{ definition: "weak", usage: "Strength", examples: [{ de: "Ich bin schwach.", en: "I am weak." }]}], variations: [], related: [] },
+            { word: "reich", type: "adjective", meanings: [{ definition: "rich", usage: "Wealth", examples: [{ de: "Er ist reich.", en: "He is rich." }]}], variations: [], related: [] },
+            { word: "arm", type: "adjective", meanings: [{ definition: "poor", usage: "Poverty", examples: [{ de: "Sie ist arm.", en: "She is poor." }]}], variations: [], related: [] },
+            { word: "teuer", type: "adjective", meanings: [{ definition: "expensive", usage: "Cost", examples: [{ de: "Das Auto ist teuer.", en: "The car is expensive." }]}], variations: [], related: [] },
+            { word: "billig", type: "adjective", meanings: [{ definition: "cheap", usage: "Cost", examples: [{ de: "Das Handy ist billig.", en: "The phone is cheap." }]}], variations: [], related: [] },
+            { word: "voll", type: "adjective", meanings: [{ definition: "full", usage: "Filled", examples: [{ de: "Das Glas ist voll.", en: "The glass is full." }]}], variations: [], related: [] },
+            { word: "leer", type: "adjective", meanings: [{ definition: "empty", usage: "Empty", examples: [{ de: "Die Flasche ist leer.", en: "The bottle is empty." }]}], variations: [], related: [] },
+            { word: "sauber", type: "adjective", meanings: [{ definition: "clean", usage: "Cleanliness", examples: [{ de: "Das Zimmer ist sauber.", en: "The room is clean." }]}], variations: [], related: [] },
+            { word: "schmutzig", type: "adjective", meanings: [{ definition: "dirty", usage: "Dirty", examples: [{ de: "Die Wäsche ist schmutzig.", en: "The laundry is dirty." }]}], variations: [], related: [] },
+            { word: "früh", type: "adjective", meanings: [{ definition: "early", usage: "Time", examples: [{ de: "Ich stehe früh auf.", en: "I get up early." }]}], variations: [], related: [] },
+            { word: "spät", type: "adjective", meanings: [{ definition: "late", usage: "Time", examples: [{ de: "Es ist spät.", en: "It's late." }]}], variations: [], related: [] },
+            { word: "richtig", type: "adjective", meanings: [{ definition: "right, correct", usage: "Correctness", examples: [{ de: "Die Antwort ist richtig.", en: "The answer is correct." }]}], variations: [], related: [] },
+            { word: "falsch", type: "adjective", meanings: [{ definition: "wrong, false", usage: "Incorrectness", examples: [{ de: "Die Antwort ist falsch.", en: "The answer is wrong." }]}], variations: [], related: [] },
+            { word: "wichtig", type: "adjective", meanings: [{ definition: "important", usage: "Significance", examples: [{ de: "Das ist wichtig.", en: "That's important." }]}], variations: [], related: [] },
+            { word: "interessant", type: "adjective", meanings: [{ definition: "interesting", usage: "Interest", examples: [{ de: "Das Buch ist interessant.", en: "The book is interesting." }]}], variations: [], related: [] },
+            { word: "langweilig", type: "adjective", meanings: [{ definition: "boring", usage: "Dull", examples: [{ de: "Der Film ist langweilig.", en: "The movie is boring." }]}], variations: [], related: [] },
+            { word: "lustig", type: "adjective", meanings: [{ definition: "funny, amusing", usage: "Humor", examples: [{ de: "Der Witz ist lustig.", en: "The joke is funny." }]}], variations: [], related: [] },
+            { word: "traurig", type: "adjective", meanings: [{ definition: "sad", usage: "Sadness", examples: [{ de: "Ich bin traurig.", en: "I am sad." }]}], variations: [], related: [] },
+            { word: "glücklich", type: "adjective", meanings: [{ definition: "happy", usage: "Happiness", examples: [{ de: "Ich bin glücklich.", en: "I am happy." }]}], variations: [], related: [] },
+            { word: "gesund", type: "adjective", meanings: [{ definition: "healthy", usage: "Health", examples: [{ de: "Ich bin gesund.", en: "I am healthy." }]}], variations: [], related: [] },
+            { word: "krank", type: "adjective", meanings: [{ definition: "sick, ill", usage: "Illness", examples: [{ de: "Ich bin krank.", en: "I am sick." }]}], variations: [], related: [] },
+            { word: "müde", type: "adjective", meanings: [{ definition: "tired", usage: "Fatigue", examples: [{ de: "Ich bin müde.", en: "I am tired." }]}], variations: [], related: [] },
+            { word: "hungrig", type: "adjective", meanings: [{ definition: "hungry", usage: "Hunger", examples: [{ de: "Ich bin hungrig.", en: "I am hungry." }]}], variations: [], related: [] },
+            { word: "durstig", type: "adjective", meanings: [{ definition: "thirsty", usage: "Thirst", examples: [{ de: "Ich bin durstig.", en: "I am thirsty." }]}], variations: [], related: [] },
+            { word: "nett", type: "adjective", meanings: [{ definition: "nice, kind", usage: "Kindness", examples: [{ de: "Sie ist nett.", en: "She is nice." }]}], variations: [], related: [] },
+            { word: "freundlich", type: "adjective", meanings: [{ definition: "friendly", usage: "Friendliness", examples: [{ de: "Er ist freundlich.", en: "He is friendly." }]}], variations: [], related: [] },
+            { word: "intelligent", type: "adjective", meanings: [{ definition: "intelligent", usage: "Intelligence", examples: [{ de: "Sie ist intelligent.", en: "She is intelligent." }]}], variations: [], related: [] },
+            { word: "dumm", type: "adjective", meanings: [{ definition: "stupid, dumb", usage: "Stupidity", examples: [{ de: "Das war dumm.", en: "That was stupid." }]}], variations: [], related: [] },
+            { word: "klug", type: "adjective", meanings: [{ definition: "clever, smart", usage: "Intelligence", examples: [{ de: "Das ist klug.", en: "That's clever." }]}], variations: [], related: [] },
+            { word: "laut", type: "adjective", meanings: [{ definition: "loud", usage: "Volume", examples: [{ de: "Die Musik ist laut.", en: "The music is loud." }]}], variations: [], related: [] },
+            { word: "leise", type: "adjective", meanings: [{ definition: "quiet, soft", usage: "Volume", examples: [{ de: "Die Musik ist leise.", en: "The music is quiet." }]}], variations: [], related: [] },
+            { word: "hell", type: "adjective", meanings: [{ definition: "bright, light", usage: "Brightness", examples: [{ de: "Das Licht ist hell.", en: "The light is bright." }]}], variations: [], related: [] },
+            { word: "dunkel", type: "adjective", meanings: [{ definition: "dark", usage: "Darkness", examples: [{ de: "Das Zimmer ist dunkel.", en: "The room is dark." }]}], variations: [], related: [] },
+            { word: "rot", type: "adjective", meanings: [{ definition: "red", usage: "Color", examples: [{ de: "Das Auto ist rot.", en: "The car is red." }]}], variations: [], related: [] },
+            { word: "blau", type: "adjective", meanings: [{ definition: "blue", usage: "Color", examples: [{ de: "Der Himmel ist blau.", en: "The sky is blue." }]}], variations: [], related: [] },
+            { word: "grün", type: "adjective", meanings: [{ definition: "green", usage: "Color", examples: [{ de: "Das Gras ist grün.", en: "The grass is green." }]}], variations: [], related: [] },
+            { word: "gelb", type: "adjective", meanings: [{ definition: "yellow", usage: "Color", examples: [{ de: "Die Banane ist gelb.", en: "The banana is yellow." }]}], variations: [], related: [] },
+            { word: "schwarz", type: "adjective", meanings: [{ definition: "black", usage: "Color", examples: [{ de: "Die Katze ist schwarz.", en: "The cat is black." }]}], variations: [], related: [] },
+            { word: "weiß", type: "adjective", meanings: [{ definition: "white", usage: "Color", examples: [{ de: "Der Schnee ist weiß.", en: "The snow is white." }]}], variations: [], related: [] }
+        ];
 
     let currentWordIndex = 0;
     let currentExerciseIndex = 0;
