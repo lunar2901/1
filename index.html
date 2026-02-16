@@ -864,12 +864,13 @@
           <div class="question-card">
             <div class="question-text">${exercise.question}</div>
             <div class="options">
-              ${exercise.options.map((option, i) => `
-                <div class="option" onclick="selectOption(${i}, ${JSON.stringify(option)})">
-                  <span class="option-letter">${String.fromCharCode(65 + i)}</span>
-                  <span>${option}</span>
-                </div>
-              `).join('')}
+             ${exercise.options.map((option, i) => `
+              <div class="option" onclick=" onclick="selectOption(${i})"
+                <span class="option-letter">${String.fromCharCode(65 + i)}</span>
+                <span>${option}</span>
+              </div>
+            `).join('')}
+
             </div>
           </div>`;
       } else {
@@ -891,12 +892,15 @@
       updateProgress();
     }
 
-    function selectOption(index, option) {
-      selectedOption = option;
+    function selectOption(index) {
+       const exercise = exercises[currentExerciseIndex];
+      selectedOption = exercise.options[index];
+
       document.querySelectorAll('.option').forEach((opt, i) => {
         opt.classList.toggle('selected', i === index);
       });
     }
+
 
     function checkAnswer() {
       const exercise = exercises[currentExerciseIndex];
