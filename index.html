@@ -128,11 +128,25 @@
         <button class="btn btn-secondary toggle-btn" onclick="toggleWordList(event)">
           Show Words <span class="arrow">▼</span>
         </button>
-
+        
         <div class="word-navigator" id="wordNavigator">
-          <!-- IMPORTANT: only ONE word list element -->
-          <div class="word-list" id="wordList"></div>
+          <div style="display:grid; gap:12px;">
+            <button class="btn btn-secondary toggle-btn" onclick="toggleLearnedSection(event, 'learnedList')">
+              ✅ Learned <span class="arrow">▼</span>
+            </button>
+            <div class="word-navigator collapsed" id="learnedList">
+              <div class="word-list" id="learnedWords"></div>
+            </div>
+        
+            <button class="btn btn-secondary toggle-btn" onclick="toggleLearnedSection(event, 'newList')">
+              📌 Not learned yet <span class="arrow">▼</span>
+            </button>
+            <div class="word-navigator" id="newList">
+              <div class="word-list" id="newWords"></div>
+            </div>
+          </div>
         </div>
+
       </div>
 
       <div class="card word-study">
@@ -741,14 +755,27 @@
     }
 
     function updateWordList() {
-      document.getElementById('wordList').innerHTML = vocabularyData.map((word, index) => `
-        <div class="word-list-item ${index === currentWordIndex ? 'active' : ''}"
-             onclick="displayWord(${index})">
-          <strong>${word.word}</strong>
-          <div style="font-size: 0.85rem; margin-top: 5px; opacity: 0.8;">${word.type}</div>
-        </div>
-      `).join('');
+      const learned = [];
+      const notLearned = [];
+    
+      vocabularyData.forEach((word, index) => {
+        const isLearned = stats.wordsStudied.has(word.word);
+        (isLearned ? learned : notLearned).push({ word, index });
+      });
+    
+      const render = (items) =>
+        items.map(({ word, index }) => `
+          <div class="word-list-item ${index === currentWordIndex ? 'active' : ''}"
+               onclick="displayWord(${index})">
+            <strong>${word.word}</strong>
+            <div style="font-size: 0.85rem; margin-top: 5px; opacity: 0.8;">${word.type}</div>
+          </div>
+        `).join('');
+    
+      document.getElementById("learnedWords").innerHTML = render(learned);
+      document.getElementById("newWords").innerHTML = render(notLearned);
     }
+
 
     function toggleWordList(ev) {
       const navigator = document.getElementById('wordNavigator');
@@ -1158,6 +1185,21 @@ function checkAnswer() {
     displayWord(0);
     // start collapsed if you want:
     // document.getElementById('wordNavigator').classList.add('collapsed');
+
+    function toggleLearnedSection(ev, id) {
+      const section = document.getElementById(id);
+      const btn = ev.currentTarget;
+    
+      if (section.classList.contains("collapsed")) {
+        section.classList.remove("collapsed");
+        btn.innerHTML = btn.innerHTML.replace("▼", "▲");
+      } else {
+        section.classList.add("collapsed");
+        btn.innerHTML = btn.innerHTML.replace("▲", "▼");
+      }
+    }
+
+    
   </script>
 </body>
 </html>
