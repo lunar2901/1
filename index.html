@@ -762,196 +762,195 @@
       }
     }
 
+    // -----------------------------
+    // Helpers: normalization + matching
+    // -----------------------------
+    function normalizeGerman(str) {
+      return (str || "")
+        .toLowerCase()
+        .trim()
+        .replace(/[“”„"]/g, '"')
+        .replace(/[’‘]/g, "'")
+        .replace(/[.,!?;:]/g, "")
+        .replace(/\s+/g, " ")
+        .replace(/\s*-\s*/g, "-");
+    }
+  
+    function isAnswerCorrect(userAnswer, acceptedAnswers) {
+      const u = normalizeGerman(userAnswer);
+      return acceptedAnswers.some(a => normalizeGerman(a) === u);
+    }
+  
+    // OPTIONAL: tiny “near miss” hint (very lightweight)
+    function similarityHint(userAnswer, bestAnswer) {
+      const u = normalizeGerman(userAnswer);
+      const b = normalizeGerman(bestAnswer);
+      if (!u) return "";
+      if (u === b) return "";
+      // If user forgot punctuation/case, normalization already fixes it.
+      // Here we just do a crude length-based hint:
+      const diff = Math.abs(u.length - b.length);
+      if (diff <= 2) return "You're very close — check word order/articles.";
+      if (diff <= 6) return "Close — check endings (e.g., -e/-en) and articles.";
+      return "Check key words and word order (verb position).";
+    }
+  
+    // -----------------------------
+    // NEW Exercise Generator
+    // -----------------------------
     function generateExercises() {
       exercises = [];
-
+  
       vocabularyData.forEach(word => {
-        // Meaning
-        exercises.push({
-          type: 'multiple-choice',
-          question: `What does "${word.word}" mean?`,
-          correctAnswer: word.meanings?.[0]?.definition || "",
-          options: [
-            word.meanings?.[0]?.definition || "",
-            ...getRandomMeanings(word.word, 3)
-          ].filter(Boolean).sort(() => Math.random() - 0.5),
-          word: word.word
+        // 1) English → German translation from main meaning examples
+        (word.meanings || []).forEach(meaning => {
+          (meaning.examples || []).forEach(ex => {
+            if (ex.en && ex.de) {
+              exercises.push({
+                type: "translate-en-to-de",
+                question: `Translate into German:`,
+                promptEn: ex.en,
+                // Accept multiple possible answers (start with the dataset’s German)
+                acceptedAnswers: [ex.de],
+                // For feedback / display
+                bestAnswer: ex.de,
+                word: word.word
+              });
+            }
+          });
         });
-
-        // Variation (first)
-        if (word.variations && word.variations.length > 0) {
-          const variation = word.variations[0];
-          exercises.push({
-            type: 'multiple-choice',
-            question: `What does "${variation.form}" mean?`,
-            correctAnswer: variation.meaning,
-            options: [variation.meaning, ...getRandomVariationMeanings(variation.form, 3)].sort(() => Math.random() - 0.5),
-            word: word.word
+  
+        // 2) English → German translation from variation examples too (optional but nice)
+        (word.variations || []).forEach(variation => {
+          (variation.examples || []).forEach(ex => {
+            if (ex.en && ex.de) {
+              exercises.push({
+                type: "translate-en-to-de",
+                question: `Translate into German (${variation.form}):`,
+                promptEn: ex.en,
+                acceptedAnswers: [ex.de],
+                bestAnswer: ex.de,
+                word: word.word
+              });
+            }
           });
-        }
-
-        // Translation (first example)
-        const ex0 = word.meanings?.[0]?.examples?.[0];
-        if (ex0) {
-          exercises.push({
-            type: 'multiple-choice',
-            question: `Translate: "${ex0.de}"`,
-            correctAnswer: ex0.en,
-            options: [ex0.en, ...getRandomTranslations(ex0.en, 3)].sort(() => Math.random() - 0.5),
-            word: word.word
-          });
-        }
-
-        // Fill-in (second example)
-        const ex1 = word.meanings?.[0]?.examples?.[1];
-        if (ex1) {
-          const base = word.word.split(' ')[0].toLowerCase();
-          const token = ex1.de.split(/\s+/).find(w => w.toLowerCase().includes(base));
-          if (token) {
-            exercises.push({
-              type: 'fill-in',
-              question: `Fill in the blank: "${ex1.de.replace(token, '_____')}"`,
-              correctAnswer: token.replace(/[.,!?]/g, '').toLowerCase(),
-              sentence: ex1.de,
-              translation: ex1.en,
-              word: word.word
-            });
-          }
-        }
+        });
       });
-
+  
+      // Shuffle
       exercises = exercises.sort(() => Math.random() - 0.5);
     }
-
-    function getRandomMeanings(_, count) {
-      const options = ["to promise", "to discuss", "to pronounce", "to appeal to", "to correspond to", "to address"];
-      const res = [];
-      while (res.length < count) {
-        const m = options[Math.floor(Math.random() * options.length)];
-        if (!res.includes(m)) res.push(m);
-      }
-      return res;
-    }
-
-    function getRandomVariationMeanings(_, count) {
-      const options = ["to talk about something", "to speak with someone", "to clear the air", "to bring up a topic"];
-      const res = [];
-      while (res.length < count) {
-        const m = options[Math.floor(Math.random() * options.length)];
-        if (!res.includes(m)) res.push(m);
-      }
-      return res;
-    }
-
-    function getRandomTranslations(exclude, count) {
-      const options = [
-        "We need to discuss the project.",
-        "Can you promise me something?",
-        "The product meets our standards.",
-        "He addressed me politely.",
-        "I need to talk to you."
-      ];
-      const res = [];
-      while (res.length < count) {
-        const t = options[Math.floor(Math.random() * options.length)];
-        if (!res.includes(t) && t !== exclude) res.push(t);
-      }
-      return res;
-    }
-
+  
+    // -----------------------------
+    // UPDATED displayExercise()
+    // -----------------------------
     function displayExercise(index) {
       if (index >= exercises.length) return displayExerciseComplete();
-
+  
       currentExerciseIndex = index;
       const exercise = exercises[index];
       selectedOption = null;
-
-      let exerciseHTML = '';
-
-      if (exercise.type === 'multiple-choice') {
-      exerciseHTML = `
-        <div class="question-card">
-          <div class="question-text">${exercise.question}</div>
-          <div class="options">
-            ${exercise.options.map((option, i) => `
-              <div class="option" onclick="selectOption(${i})">
-                <span class="option-letter">${String.fromCharCode(65 + i)}</span>
-                <span>${option}</span>
-              </div>
-            `).join('')}
-          </div>
-        </div>
-      `;
-
-      } else {
+  
+      let exerciseHTML = "";
+  
+      if (exercise.type === "translate-en-to-de") {
         exerciseHTML = `
           <div class="question-card">
             <div class="question-text">${exercise.question}</div>
-            <p style="margin: 10px 0; color: #666; font-style: italic;">Translation: ${exercise.translation}</p>
-            <input type="text" class="correction-input" id="fillInInput"
-                   placeholder="Type your answer here..."
-                   onkeypress="if(event.key === 'Enter') checkAnswer()">
-          </div>`;
+  
+            <div class="meaning-item" style="margin-top: 10px;">
+              <strong>English:</strong>
+              <div style="margin-top: 8px;">"${exercise.promptEn}"</div>
+            </div>
+  
+            <input
+              type="text"
+              class="correction-input"
+              id="translateInput"
+              placeholder="Type the German translation..."
+              onkeypress="if(event.key === 'Enter') checkAnswer()"
+              autocomplete="off"
+              spellcheck="false"
+            />
+  
+            <div style="margin-top: 10px; color: #666; font-size: 0.9rem;">
+              Tip: Don’t worry about punctuation — focus on correct words + word order.
+            </div>
+          </div>
+        `;
+      } else {
+        // If you still keep other exercise types, handle them here.
+        // For now, show a fallback:
+        exerciseHTML = `
+          <div class="question-card">
+            <div class="question-text">Unsupported exercise type: ${exercise.type}</div>
+          </div>
+        `;
       }
-
-      document.getElementById('exerciseContent').innerHTML = exerciseHTML;
-      document.getElementById('feedback').innerHTML = '';
-      document.getElementById('checkBtn').style.display = 'inline-block';
-      document.getElementById('nextBtn').style.display = 'none';
-
+  
+      document.getElementById("exerciseContent").innerHTML = exerciseHTML;
+      document.getElementById("feedback").innerHTML = "";
+      document.getElementById("checkBtn").style.display = "inline-block";
+      document.getElementById("nextBtn").style.display = "none";
+  
       updateProgress();
     }
-
-    function selectOption(index) {
-       const exercise = exercises[currentExerciseIndex];
-      selectedOption = exercise.options[index];
-
-      document.querySelectorAll('.option').forEach((opt, i) => {
-        opt.classList.toggle('selected', i === index);
-      });
-    }
-
-
+  
+    // -----------------------------
+    // UPDATED checkAnswer()
+    // -----------------------------
     function checkAnswer() {
       const exercise = exercises[currentExerciseIndex];
       let isCorrect = false;
-
-      if (exercise.type === 'multiple-choice') {
-        if (!selectedOption) return alert('Please select an answer!');
-        isCorrect = selectedOption === exercise.correctAnswer;
-
-        document.querySelectorAll('.option').forEach(opt => {
-          const optionText = opt.querySelector('span:last-child').textContent;
-          if (optionText === exercise.correctAnswer) opt.classList.add('correct');
-          else if (optionText === selectedOption && !isCorrect) opt.classList.add('incorrect');
+  
+      if (exercise.type === "translate-en-to-de") {
+        const input = document.getElementById("translateInput");
+        const userAnswer = input.value || "";
+  
+        isCorrect = isAnswerCorrect(userAnswer, exercise.acceptedAnswers);
+  
+        input.style.borderColor = isCorrect ? "#4caf50" : "#f44336";
+  
+        const hint = isCorrect ? "" : similarityHint(userAnswer, exercise.bestAnswer);
+  
+        totalQuestions++;
+        stats.totalAnswers++;
+        if (isCorrect) {
+          score++;
+          stats.correctAnswers++;
+        }
+  
+        stats.activityLog.unshift({
+          word: exercise.word,
+          correct: isCorrect,
+          timestamp: new Date().toISOString()
         });
-
-      } else {
-        const input = document.getElementById('fillInInput');
-        const userAnswer = input.value.trim().toLowerCase();
-        isCorrect = userAnswer === exercise.correctAnswer;
-        input.style.borderColor = isCorrect ? '#4caf50' : '#f44336';
+        stats.activityLog = stats.activityLog.slice(0, 20);
+  
+        saveStats();
+        updateScore();
+  
+        document.getElementById("feedback").innerHTML = isCorrect
+          ? `<div class="feedback correct">✓ Correct! Nice translation.</div>`
+          : `<div class="feedback incorrect">
+               ✗ Not quite.
+               <p style="margin-top: 10px;">One good answer is: <strong>${exercise.bestAnswer}</strong></p>
+               ${hint ? `<p style="margin-top: 8px; color:#8a2be2;"><strong>Hint:</strong> ${hint}</p>` : ""}
+             </div>`;
+  
+        document.getElementById("checkBtn").style.display = "none";
+        document.getElementById("nextBtn").style.display = "inline-block";
+        return;
       }
-
-      totalQuestions++;
-      stats.totalAnswers++;
-      if (isCorrect) { score++; stats.correctAnswers++; }
-
-      stats.activityLog.unshift({ word: exercise.word, correct: isCorrect, timestamp: new Date().toISOString() });
-      stats.activityLog = stats.activityLog.slice(0, 20);
-
-      saveStats();
-      updateScore();
-
-      document.getElementById('feedback').innerHTML = isCorrect
-        ? `<div class="feedback correct">✓ Correct! Well done!</div>`
-        : `<div class="feedback incorrect">✗ Not quite right.
-             <p style="margin-top: 10px;">The correct answer is: <strong>${exercise.correctAnswer}</strong></p>
-           </div>`;
-
-      document.getElementById('checkBtn').style.display = 'none';
-      document.getElementById('nextBtn').style.display = 'inline-block';
+  
+      // Fallback (if other types exist)
+      alert("This exercise type isn't wired up yet.");
     }
+  
+    // -----------------------------
+    // Keep your existing nextQuestion(), resetExercise(), etc.
+    // Just make sure resetExercise() calls generateExercises() and displayExercise(0)
+    // -----------------------------
 
     function nextQuestion() {
       stats.exercisesCompleted++;
