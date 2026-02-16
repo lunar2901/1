@@ -665,78 +665,80 @@
       }));
     }
 
-    function displayWord(index) {
-      currentWordIndex = index;
-      const word = vocabularyData[index];
+function displayWord(index) {
+  currentWordIndex = index;
+  const word = vocabularyData[index];
 
-      stats.wordsStudied.add(word.word);
-      saveStats();
+  stats.wordsStudied.add(word.word);
+  saveStats();
 
-      document.getElementById('wordDetails').innerHTML = detailsHTML;
-      updateWordList();
-      
-      // Collapse word list after selecting a word
-      const navigator = document.getElementById('wordNavigator');
-      const toggleBtn = document.querySelector('.toggle-btn');
-      navigator.classList.add('collapsed');
-      toggleBtn.innerHTML = 'Show Words <span class="arrow">▼</span>';
+  document.getElementById('currentWord').textContent = word.word;
+  document.getElementById('wordType').textContent = word.type;
 
+  // Build HTML FIRST
+  let detailsHTML = '';
 
-      let detailsHTML = '';
+  if (word.conjugation) {
+    detailsHTML += `
+      <div class="section">
+        <h3>📝 Conjugation</h3>
+        <div class="meaning-item"><strong>${word.conjugation}</strong></div>
+      </div>`;
+  }
 
-      if (word.conjugation) {
-        detailsHTML += `
-          <div class="section">
-            <h3>📝 Conjugation</h3>
-            <div class="meaning-item"><strong>${word.conjugation}</strong></div>
-          </div>`;
-      }
+  detailsHTML += `<div class="section"><h3>💡 Main Meanings</h3>`;
+  word.meanings.forEach(meaning => {
+    detailsHTML += `
+      <div class="meaning-item">
+        <strong>${meaning.definition}</strong>
+        <p style="margin-top: 8px; color: #666;">${meaning.usage}</p>
+        ${(meaning.examples || []).map(ex => `
+          <div class="example">
+            <div>${ex.de}</div>
+            <div class="translation">${ex.en}</div>
+          </div>`).join('')}
+      </div>`;
+  });
+  detailsHTML += `</div>`;
 
-      detailsHTML += `<div class="section"><h3>💡 Main Meanings</h3>`;
-      word.meanings.forEach(meaning => {
-        detailsHTML += `
-          <div class="meaning-item">
-            <strong>${meaning.definition}</strong>
-            <p style="margin-top: 8px; color: #666;">${meaning.usage}</p>
-            ${(meaning.examples || []).map(ex => `
-              <div class="example">
-                <div>${ex.de}</div>
-                <div class="translation">${ex.en}</div>
-              </div>`).join('')}
-          </div>`;
-      });
-      detailsHTML += `</div>`;
+  if (word.variations && word.variations.length > 0) {
+    detailsHTML += `<div class="section"><h3>🔄 Variations & Usage Patterns</h3>`;
+    word.variations.forEach(variation => {
+      detailsHTML += `
+        <div class="meaning-item">
+          <strong>${variation.form}</strong>
+          <p style="margin-top: 8px; color: #666;">${variation.meaning}</p>
+          ${(variation.examples || []).map(ex => `
+            <div class="example">
+              <div>${ex.de}</div>
+              <div class="translation">${ex.en}</div>
+            </div>`).join('')}
+        </div>`;
+    });
+    detailsHTML += `</div>`;
+  }
 
-      if (word.variations && word.variations.length > 0) {
-        detailsHTML += `<div class="section"><h3>🔄 Variations & Usage Patterns</h3>`;
-        word.variations.forEach(variation => {
-          detailsHTML += `
-            <div class="meaning-item">
-              <strong>${variation.form}</strong>
-              <p style="margin-top: 8px; color: #666;">${variation.meaning}</p>
-              ${(variation.examples || []).map(ex => `
-                <div class="example">
-                  <div>${ex.de}</div>
-                  <div class="translation">${ex.en}</div>
-                </div>`).join('')}
-            </div>`;
-        });
-        detailsHTML += `</div>`;
-      }
+  if (word.related && word.related.length > 0) {
+    detailsHTML += `
+      <div class="section">
+        <h3>🔗 Related Words</h3>
+        <div class="variations">
+          ${word.related.map(rel => `<div class="variation-tag">${rel}</div>`).join('')}
+        </div>
+      </div>`;
+  }
 
-      if (word.related && word.related.length > 0) {
-        detailsHTML += `
-          <div class="section">
-            <h3>🔗 Related Words</h3>
-            <div class="variations">
-              ${word.related.map(rel => `<div class="variation-tag">${rel}</div>`).join('')}
-            </div>
-          </div>`;
-      }
+  // Now render once
+  document.getElementById('wordDetails').innerHTML = detailsHTML;
+  updateWordList();
 
-      document.getElementById('wordDetails').innerHTML = detailsHTML;
-      updateWordList();
-    }
+  // Collapse word list after selecting a word
+  const navigator = document.getElementById('wordNavigator');
+  const toggleBtn = document.querySelector('.toggle-btn');
+  navigator.classList.add('collapsed');
+  toggleBtn.innerHTML = 'Show Words <span class="arrow">▼</span>';
+}
+
 
     function updateWordList() {
       document.getElementById('wordList').innerHTML = vocabularyData.map((word, index) => `
