@@ -1,17 +1,49 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>German Vocabulary Master</title>
-    <style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>German Vocabulary Master</title>
+  <style>
+    .toggle-btn { 
+      width: 100%; 
+      text-align: left; 
+      margin-bottom: 10px; 
+      padding: 12px; 
+      background: linear-gradient(135deg, #667eea, #764ba2); 
+      color: white; 
+      border: none; 
+      border-radius: 8px; 
+      font-weight: bold; 
+      transition: all 0.3s; 
+    }
 
-.toggle-btn { width: 100%; text-align: left; margin-bottom: 10px; padding: 12px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; border-radius: 8px; font-weight: bold; transition: all 0.3s; }
-.toggle-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4); }
-.arrow { float: right; transition: transform 0.3s; }
-.word-navigator { max-height: 400px; overflow-y: auto; transition: max-height 0.3s ease-in-out; }
-.word-navigator.collapsed { max-height: 0; overflow: hidden; }
-@media (max-width: 768px) { .word-navigator { max-height: 300px; } }
+    .toggle-btn:hover { 
+      transform: translateY(-2px); 
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4); 
+    }
+
+    .arrow { 
+      float: right; 
+      transition: transform 0.3s; 
+    }
+
+    .word-navigator { 
+      max-height: 400px; 
+      overflow-y: auto; 
+      transition: max-height 0.3s ease-in-out; 
+    }
+
+    .word-navigator.collapsed { 
+      max-height: 0; 
+      overflow: hidden; 
+    }
+
+    @media (max-width: 768px) { 
+      .word-navigator { 
+        max-height: 300px; 
+      } 
+    }
 
         * {
             margin: 0;
