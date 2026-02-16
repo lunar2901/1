@@ -795,162 +795,276 @@
       return "Check key words and word order (verb position).";
     }
   
-    // -----------------------------
-    // NEW Exercise Generator
-    // -----------------------------
-    function generateExercises() {
-      exercises = [];
-  
-      vocabularyData.forEach(word => {
-        // 1) English → German translation from main meaning examples
-        (word.meanings || []).forEach(meaning => {
-          (meaning.examples || []).forEach(ex => {
-            if (ex.en && ex.de) {
-              exercises.push({
-                type: "translate-en-to-de",
-                question: `Translate into German:`,
-                promptEn: ex.en,
-                // Accept multiple possible answers (start with the dataset’s German)
-                acceptedAnswers: [ex.de],
-                // For feedback / display
-                bestAnswer: ex.de,
-                word: word.word
-              });
-            }
-          });
-        });
-  
-        // 2) English → German translation from variation examples too (optional but nice)
-        (word.variations || []).forEach(variation => {
-          (variation.examples || []).forEach(ex => {
-            if (ex.en && ex.de) {
-              exercises.push({
-                type: "translate-en-to-de",
-                question: `Translate into German (${variation.form}):`,
-                promptEn: ex.en,
-                acceptedAnswers: [ex.de],
-                bestAnswer: ex.de,
-                word: word.word
-              });
-            }
-          });
-        });
+ // -----------------------------
+// Helpers (keep / add)
+// -----------------------------
+function normalizeGerman(str) {
+  return (str || "")
+    .toLowerCase()
+    .trim()
+    .replace(/[“”„"]/g, '"')
+    .replace(/[’‘]/g, "'")
+    .replace(/[.,!?;:]/g, "")
+    .replace(/\s+/g, " ")
+    .replace(/\s*-\s*/g, "-");
+}
+
+function normalizeEnglish(str) {
+  return (str || "")
+    .toLowerCase()
+    .trim()
+    .replace(/[“”]/g, '"')
+    .replace(/[’]/g, "'")
+    .replace(/[.,!?;:]/g, "")
+    .replace(/\s+/g, " ");
+}
+
+function shuffleInPlace(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function isAnswerCorrect(userAnswer, acceptedAnswers, normalizeFn) {
+  const u = normalizeFn(userAnswer);
+  return acceptedAnswers.some(a => normalizeFn(a) === u);
+}
+
+// Distractors for MCQ (pick other DE or EN sentences)
+function getRandomDistractors(pool, correct, count, normalizeFn) {
+  const correctN = normalizeFn(correct);
+  const uniq = [...new Set(pool)].filter(x => normalizeFn(x) !== correctN);
+  shuffleInPlace(uniq);
+  return uniq.slice(0, count);
+}
+
+// -----------------------------
+// Exercise Generator: EN<->DE, typed + MCQ
+// -----------------------------
+function generateExercises() {
+  exercises = [];
+
+  // Build sentence pair pool from your dataset
+  const pairs = [];
+  vocabularyData.forEach(word => {
+    (word.meanings || []).forEach(m =>
+      (m.examples || []).forEach(ex => {
+        if (ex.en && ex.de) pairs.push({ en: ex.en, de: ex.de, word: word.word });
+      })
+    );
+    (word.variations || []).forEach(v =>
+      (v.examples || []).forEach(ex => {
+        if (ex.en && ex.de) pairs.push({ en: ex.en, de: ex.de, word: word.word });
+      })
+    );
+  });
+
+  // Pools for distractors
+  const allDE = pairs.map(p => p.de);
+  const allEN = pairs.map(p => p.en);
+
+  // Create exercises
+  pairs.forEach(p => {
+    // EN -> DE (MCQ)
+    {
+      const distractors = getRandomDistractors(allDE, p.de, 3, normalizeGerman);
+      exercises.push({
+        type: "mcq-en-to-de",
+        prompt: p.en,
+        correctAnswer: p.de,
+        options: shuffleInPlace([p.de, ...distractors]),
+        word: p.word
       });
-  
-      // Shuffle
-      exercises = exercises.sort(() => Math.random() - 0.5);
     }
-  
-    // -----------------------------
-    // UPDATED displayExercise()
-    // -----------------------------
-    function displayExercise(index) {
-      if (index >= exercises.length) return displayExerciseComplete();
-  
-      currentExerciseIndex = index;
-      const exercise = exercises[index];
-      selectedOption = null;
-  
-      let exerciseHTML = "";
-  
-      if (exercise.type === "translate-en-to-de") {
-        exerciseHTML = `
-          <div class="question-card">
-            <div class="question-text">${exercise.question}</div>
-  
-            <div class="meaning-item" style="margin-top: 10px;">
-              <strong>English:</strong>
-              <div style="margin-top: 8px;">"${exercise.promptEn}"</div>
+
+    // EN -> DE (typed)
+    exercises.push({
+      type: "type-en-to-de",
+      prompt: p.en,
+      acceptedAnswers: [p.de],
+      bestAnswer: p.de,
+      word: p.word
+    });
+
+    // DE -> EN (MCQ)
+    {
+      const distractors = getRandomDistractors(allEN, p.en, 3, normalizeEnglish);
+      exercises.push({
+        type: "mcq-de-to-en",
+        prompt: p.de,
+        correctAnswer: p.en,
+        options: shuffleInPlace([p.en, ...distractors]),
+        word: p.word
+      });
+    }
+
+    // DE -> EN (typed)
+    exercises.push({
+      type: "type-de-to-en",
+      prompt: p.de,
+      acceptedAnswers: [p.en],
+      bestAnswer: p.en,
+      word: p.word
+    });
+  });
+
+  // Shuffle so it’s random
+  shuffleInPlace(exercises);
+
+  // Optional: limit session size
+  const SESSION_SIZE = 30;
+  exercises = exercises.slice(0, Math.min(SESSION_SIZE, exercises.length));
+}
+
+// -----------------------------
+// Display Exercise
+// -----------------------------
+function displayExercise(index) {
+  if (index >= exercises.length) return displayExerciseComplete();
+
+  currentExerciseIndex = index;
+  const ex = exercises[index];
+  selectedOption = null;
+
+  let html = "";
+
+  const isMCQ = ex.type.startsWith("mcq-");
+  const isTyped = ex.type.startsWith("type-");
+
+  const promptLabel = (ex.type.includes("-en-")) ? "English" : "German";
+  const answerLabel = (ex.type.includes("-to-de")) ? "German" : "English";
+
+  if (isMCQ) {
+    html = `
+      <div class="question-card">
+        <div class="question-text">Choose the correct ${answerLabel} translation:</div>
+
+        <div class="meaning-item" style="margin-top: 10px;">
+          <strong>${promptLabel}:</strong>
+          <div style="margin-top: 8px;">"${ex.prompt}"</div>
+        </div>
+
+        <div class="options" style="margin-top: 12px;">
+          ${ex.options.map((opt, i) => `
+            <div class="option" onclick="selectOption(${i})">
+              <span class="option-letter">${String.fromCharCode(65 + i)}</span>
+              <span>${opt}</span>
             </div>
-  
-            <input
-              type="text"
-              class="correction-input"
-              id="translateInput"
-              placeholder="Type the German translation..."
-              onkeypress="if(event.key === 'Enter') checkAnswer()"
-              autocomplete="off"
-              spellcheck="false"
-            />
-  
-            <div style="margin-top: 10px; color: #666; font-size: 0.9rem;">
-              Tip: Don’t worry about punctuation — focus on correct words + word order.
-            </div>
-          </div>
-        `;
-      } else {
-        // If you still keep other exercise types, handle them here.
-        // For now, show a fallback:
-        exerciseHTML = `
-          <div class="question-card">
-            <div class="question-text">Unsupported exercise type: ${exercise.type}</div>
-          </div>
-        `;
-      }
-  
-      document.getElementById("exerciseContent").innerHTML = exerciseHTML;
-      document.getElementById("feedback").innerHTML = "";
-      document.getElementById("checkBtn").style.display = "inline-block";
-      document.getElementById("nextBtn").style.display = "none";
-  
-      updateProgress();
-    }
-  
-    // -----------------------------
-    // UPDATED checkAnswer()
-    // -----------------------------
-    function checkAnswer() {
-      const exercise = exercises[currentExerciseIndex];
-      let isCorrect = false;
-  
-      if (exercise.type === "translate-en-to-de") {
-        const input = document.getElementById("translateInput");
-        const userAnswer = input.value || "";
-  
-        isCorrect = isAnswerCorrect(userAnswer, exercise.acceptedAnswers);
-  
-        input.style.borderColor = isCorrect ? "#4caf50" : "#f44336";
-  
-        const hint = isCorrect ? "" : similarityHint(userAnswer, exercise.bestAnswer);
-  
-        totalQuestions++;
-        stats.totalAnswers++;
-        if (isCorrect) {
-          score++;
-          stats.correctAnswers++;
-        }
-  
-        stats.activityLog.unshift({
-          word: exercise.word,
-          correct: isCorrect,
-          timestamp: new Date().toISOString()
-        });
-        stats.activityLog = stats.activityLog.slice(0, 20);
-  
-        saveStats();
-        updateScore();
-  
-        document.getElementById("feedback").innerHTML = isCorrect
-          ? `<div class="feedback correct">✓ Correct! Nice translation.</div>`
-          : `<div class="feedback incorrect">
-               ✗ Not quite.
-               <p style="margin-top: 10px;">One good answer is: <strong>${exercise.bestAnswer}</strong></p>
-               ${hint ? `<p style="margin-top: 8px; color:#8a2be2;"><strong>Hint:</strong> ${hint}</p>` : ""}
-             </div>`;
-  
-        document.getElementById("checkBtn").style.display = "none";
-        document.getElementById("nextBtn").style.display = "inline-block";
-        return;
-      }
-  
-      // Fallback (if other types exist)
-      alert("This exercise type isn't wired up yet.");
-    }
-  
-    // -----------------------------
-    // Keep your existing nextQuestion(), resetExercise(), etc.
-    // Just make sure resetExercise() calls generateExercises() and displayExercise(0)
-    // -----------------------------
+          `).join("")}
+        </div>
+      </div>
+    `;
+  } else if (isTyped) {
+    const inputId = "typedInput";
+    const tip =
+      answerLabel === "German"
+        ? "Tip: punctuation doesn’t matter; focus on word order + verb position."
+        : "Tip: punctuation/case doesn’t matter; focus on meaning.";
+
+    html = `
+      <div class="question-card">
+        <div class="question-text">Translate into ${answerLabel}:</div>
+
+        <div class="meaning-item" style="margin-top: 10px;">
+          <strong>${promptLabel}:</strong>
+          <div style="margin-top: 8px;">"${ex.prompt}"</div>
+        </div>
+
+        <input
+          type="text"
+          class="correction-input"
+          id="${inputId}"
+          placeholder="Type the ${answerLabel} translation..."
+          onkeypress="if(event.key === 'Enter') checkAnswer()"
+          autocomplete="off"
+          spellcheck="false"
+        />
+
+        <div style="margin-top: 10px; color: #666; font-size: 0.9rem;">${tip}</div>
+      </div>
+    `;
+  }
+
+  document.getElementById("exerciseContent").innerHTML = html;
+  document.getElementById("feedback").innerHTML = "";
+  document.getElementById("checkBtn").style.display = "inline-block";
+  document.getElementById("nextBtn").style.display = "none";
+
+  updateProgress();
+}
+
+// -----------------------------
+// MCQ select
+// -----------------------------
+function selectOption(index) {
+  const ex = exercises[currentExerciseIndex];
+  if (!ex.type.startsWith("mcq-")) return;
+
+  selectedOption = ex.options[index];
+
+  document.querySelectorAll(".option").forEach((opt, i) => {
+    opt.classList.toggle("selected", i === index);
+  });
+}
+
+// -----------------------------
+// Check Answer (MCQ + Typed, both directions)
+// -----------------------------
+function checkAnswer() {
+  const ex = exercises[currentExerciseIndex];
+  let isCorrect = false;
+
+  // MCQ
+  if (ex.type.startsWith("mcq-")) {
+    if (!selectedOption) return alert("Please select an answer!");
+
+    const norm = ex.type.includes("-to-de") ? normalizeGerman : normalizeEnglish;
+    isCorrect = norm(selectedOption) === norm(ex.correctAnswer);
+
+    document.querySelectorAll(".option").forEach(opt => {
+      const txt = opt.querySelector("span:last-child").textContent;
+      if (norm(txt) === norm(ex.correctAnswer)) opt.classList.add("correct");
+      else if (norm(txt) === norm(selectedOption) && !isCorrect) opt.classList.add("incorrect");
+    });
+  }
+
+  // Typed
+  else if (ex.type.startsWith("type-")) {
+    const input = document.getElementById("typedInput");
+    const userAnswer = input.value || "";
+
+    const norm = ex.type.includes("-to-de") ? normalizeGerman : normalizeEnglish;
+    isCorrect = isAnswerCorrect(userAnswer, ex.acceptedAnswers, norm);
+
+    input.style.borderColor = isCorrect ? "#4caf50" : "#f44336";
+  }
+
+  // scoring/stats (same pattern as your app)
+  totalQuestions++;
+  stats.totalAnswers++;
+  if (isCorrect) { score++; stats.correctAnswers++; }
+
+  stats.activityLog.unshift({ word: ex.word, correct: isCorrect, timestamp: new Date().toISOString() });
+  stats.activityLog = stats.activityLog.slice(0, 20);
+
+  saveStats();
+  updateScore();
+
+  const correctText = ex.correctAnswer || ex.bestAnswer;
+
+  document.getElementById("feedback").innerHTML = isCorrect
+    ? `<div class="feedback correct">✓ Correct!</div>`
+    : `<div class="feedback incorrect">
+         ✗ Not quite.
+         <p style="margin-top: 10px;">Correct answer: <strong>${correctText}</strong></p>
+       </div>`;
+
+  document.getElementById("checkBtn").style.display = "none";
+  document.getElementById("nextBtn").style.display = "inline-block";
+}
+
 
     function nextQuestion() {
       stats.exercisesCompleted++;
