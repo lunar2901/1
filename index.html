@@ -860,19 +860,20 @@
       let exerciseHTML = '';
 
       if (exercise.type === 'multiple-choice') {
-        exerciseHTML = `
-          <div class="question-card">
-            <div class="question-text">${exercise.question}</div>
-            <div class="options">
-             ${exercise.options.map((option, i) => `
-              <div class="option" onclick=" onclick="selectOption(${i})"
+      exerciseHTML = `
+        <div class="question-card">
+          <div class="question-text">${exercise.question}</div>
+          <div class="options">
+            ${exercise.options.map((option, i) => `
+              <div class="option" onclick="selectOption(${i})">
                 <span class="option-letter">${String.fromCharCode(65 + i)}</span>
                 <span>${option}</span>
               </div>
             `).join('')}
+          </div>
+        </div>
+      `;
 
-            </div>
-          </div>`;
       } else {
         exerciseHTML = `
           <div class="question-card">
